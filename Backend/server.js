@@ -12,11 +12,12 @@ const app = express();
 
 const allowedOrigins = {
   development: ["http://localhost:5173"],
-  production: ["https://blog-task-rho.vercel.app/"],
+  production: ["https://blog-task-rho.vercel.app"],
 };
 
 app.use(cors({
   origin: (origin, callback) => {
+    console.log("CORS request from:", origin); 
     const currentEnv = process.env.NODE_ENV || "development";
     const isAllowed = allowedOrigins[currentEnv].includes(origin);
 
