@@ -12,7 +12,7 @@ const app = express();
 
 const allowedOrigins = {
   development: ["http://localhost:5173"],
-  production: ["https://your-vercel-domain.vercel.app"],
+  production: ["https://blog-task-rho.vercel.app/"],
 };
 
 app.use(cors({
