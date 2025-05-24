@@ -7,11 +7,14 @@ const UpdateBlog = () => {
   const [formData, setFormData] = useState({ Title: "", Description: "", blogImage: null });
   const navigate = useNavigate();
 
+
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+
   useEffect(() => {
     const fetchBlog = async () => {
-      const token = localStorage.getItem("token");
-      const res = await axios.get(`http://localhost:8000/api/blogs/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      // const token = localStorage.getItem("token");
+      const res = await axios.get(`${API_BASE_URL}/api/Blog/blogs/${id}`, {
+        withCredentials: true,
       });
 
      
@@ -30,14 +33,14 @@ const UpdateBlog = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
     const data = new FormData();
     data.append("Title", formData.Title);
     data.append("Description", formData.Description);
     if (formData.blogImage) data.append("image", formData.blogImage); 
 
-    await axios.put(`http://localhost:8000/api/blog/blogs/${id}`, data, {
-      headers: { Authorization: `Bearer ${token}` },
+    await axios.put(`${API_BASE_URL}/api/blog/blogs/${id}`, data, {
+       withCredentials: true,
     });
     navigate("/dashboard");
   };

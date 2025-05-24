@@ -4,9 +4,11 @@ const Navbar = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+
   const handleLogout = async () => {
     try {
-      const res = await fetch("/api/auth/logout", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include", 
       });
@@ -81,7 +83,7 @@ const Navbar = () => {
                   className="w-8 h-8 rounded-full object-cover text-white"
                   src={
                     user?.ProfileImage
-                      ? `http://localhost:8000/${user.ProfileImage}`
+                      ? `${API_BASE_URL}/${user.ProfileImage}`
                       : ""
                   }
                   alt="P"

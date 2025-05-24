@@ -9,7 +9,26 @@ dotenv.config({
 
 const app = express();
 
-app.use(cors());
+
+const allowedOrigins = {
+  development: ["http://localhost:5173"],
+  production: ["https://your-vercel-domain.vercel.app"],
+};
+
+app.use(cors({
+  origin: (origin, callback) => {
+    const currentEnv = process.env.NODE_ENV || "development";
+    const isAllowed = allowedOrigins[currentEnv].includes(origin);
+
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin || isAllowed) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.static("public"));
 

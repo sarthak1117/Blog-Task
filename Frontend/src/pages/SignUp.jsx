@@ -6,6 +6,8 @@ function SignUp() {
   const [formData, setFormData] = useState({ Email: '', Password: '', ProfileImage: null });
   const navigate = useNavigate();
 
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'ProfileImage') {
@@ -22,7 +24,7 @@ function SignUp() {
     data.append('Password', formData.Password);
     data.append('ProfileImage', formData.ProfileImage);
     try {
-      await axios.post('http://localhost:8000/api/auth/register', data);
+      await axios.post(`${API_BASE_URL}/api/auth/register`, data);
       alert('User created successfully')
       navigate('/login');
     } catch (err) {

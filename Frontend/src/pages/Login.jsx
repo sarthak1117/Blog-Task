@@ -7,30 +7,40 @@ const Login = () => {
   const [Password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+const handleLogin = async (e) => {
+  e.preventDefault();
 
-    if (!Email || !Password) {
-      setError("All fields are required");
+  if (!Email || !Password) {
+    setError("All fields are required");
+    return;
+  }
+
+  try {
+    const res = await axios.post(
+      `${API_BASE_URL}/api/auth/login`,
+      { Email, Password },
+      { withCredentials: true }
+    );
+
+    console.log("Login response:", res); // ✅ Log whole response
+
+    const { user } = res.data;
+
+    if (!user) {
+      setError("Login failed: user not returned");
       return;
     }
 
-    try {
-      const res = await axios.post("api/auth/login", {
-        Email,
-        Password,
-      });
+    localStorage.setItem("user", JSON.stringify(user));
+    navigate("/Dashboard");
+  } catch (err) {
+    console.error("Login error:", err);
+    setError(err.response?.data?.message || "Login failed");
+  }
+};
 
-      const { Token, user } = res.data;
-
-      localStorage.setItem("token", Token);
-      localStorage.setItem("user", JSON.stringify(user));
-      navigate("/Dashboard");
-    } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
-    }
-  };
 
   const handleSignUp=()=>{
     navigate("/signup")

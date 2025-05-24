@@ -7,12 +7,14 @@ const Dashboard = () => {
   const [blogs, setBlogs] = useState([]);
   const navigate = useNavigate();
 
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const res = await axios.get("/api/blog/blogs", {
-          headers: { Authorization: `Bearer ${token}` },
+        
+        const res = await axios.get(`${API_BASE_URL}/api/blog/blogs`, {
+           withCredentials: true,
         });
         setBlogs(res.data.blogs);
       } catch (err) {
@@ -40,7 +42,7 @@ const Dashboard = () => {
     
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:8000/api/blog/blogs/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/blog/blogs/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog._id !== id));
@@ -80,7 +82,7 @@ const Dashboard = () => {
                     <td className="px-4 py-2">{blog.Title}</td>
                     <td className="px-4 py-2">
                       <img
-                        src={`http://localhost:8000/${blog.blogImage}`}
+                        src={`${API_BASE_URL}/${blog.blogImage}`}
                         alt={blog.blogImage}
                         className="h-16 w-24 object-cover rounded"
                       />

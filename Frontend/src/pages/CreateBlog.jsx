@@ -7,6 +7,8 @@ const CreateBlog = () => {
   const [formData, setFormData] = useState({ Title: "", Description: "", blogImage: null });
   const navigate = useNavigate();
 
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prev) => ({
@@ -24,13 +26,7 @@ const CreateBlog = () => {
     return;
   }
 
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    alert("You are not authenticated. Please log in.");
-    navigate("/login");
-    return;
-  }
+  
 
   const data = new FormData();
   data.append("Title", formData.Title); 
@@ -38,11 +34,10 @@ const CreateBlog = () => {
   data.append("blogImage", formData.blogImage);
 
   try {
-    const response = await axios.post("/api/blog/blogs", data, {
+    const response = await axios.post(`${API_BASE_URL}/api/blog/blogs`, data, {
       headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data"
-      },
+                "Content-Type": "multipart/form-data"
+      }, withCredentials: true
     });
 
     if (response.status === 201 || response.status === 200) {

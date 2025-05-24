@@ -1,6 +1,7 @@
 import express from "express";
-import logoutUser, { registerUser, login } from "../controllers/Auth.controller.js";
+import  { registerUser, login, logoutUser } from "../controllers/Auth.controller.js";
 import { upload } from "../middleware/multerMiddleware.js";
+import { verifyJWT } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
